@@ -86,7 +86,8 @@ const businessOwnerAction = {
               'Add employee',
               'Add role',
               'Add department',
-              'Update employee roles',
+              'Update employee role',
+              'Delete employee',
               'Exit']
 };
 
@@ -100,7 +101,7 @@ connection.connect(function(err) {
 });
 
 //-----------------------------------------------------------------
-// main processing loop
+// main process loop
 // - prompt business owner for action they'd like to perform
 // - call function to perform selected action
 // - repeat until they're finished
@@ -109,32 +110,65 @@ function main() {
     inquirer
       .prompt(businessOwnerAction)
       .then(function(selection) {
+        //
         // based on business owner's answer, perform the corresponding functions
-        if (selection.action === 'View all employees') {
+        //
+        switch (selection.action) {
+          case 'View all employees':
               viewAllEmployees();
-        }
-        else if(selection.action === 'View all roles') {
+              break;
+          case 'View all roles':
               viewAllRoles();
-        }
-        else if(selection.action === 'View all departments') {
+              break;
+          case 'View all departments':
               viewAllDepartments();
-        }
-        else if(selection.action === 'Add employee') {
+              break;
+          case 'Add employee':
               addEmployee();
-        }
-        else if(selection.action === 'Add role') {
+              break;
+          case 'Add role':
               addRole();
-        }
-        else if(selection.action === 'Add department') {
+              break;
+          case 'Add department':
               addDepartment();
-        }
-        else if(selection.action === 'Update employee roles') {
-              updateEmployeeRoles();
-        } else{
-          connection.end();
+              break;
+          case 'Update employee role':
+              updateEmployeeRole();
+              break;
+          case 'Delete employee':
+              deleteEmployee();
+              break;
+          default:
+              connection.end();
         }
       });
   }
+// if (selection.action === 'View all employees') {
+//     viewAllEmployees();
+// }
+// else if(selection.action === 'View all roles') {
+//     viewAllRoles();
+// }
+// else if(selection.action === 'View all departments') {
+//     viewAllDepartments();
+// }
+// else if(selection.action === 'Add employee') {
+//     addEmployee();
+// }
+// else if(selection.action === 'Add role') {
+//     addRole();
+// }
+// else if(selection.action === 'Add department') {
+//     addDepartment();
+// }
+// else if(selection.action === 'Update employee roles') {
+//     updateEmployeeRole();
+// }
+// else if(selection.action === 'Delete employee') {
+//     deleteEmployee();
+// } else{
+// connection.end();
+// }
 
 
 function viewAllEmployees() {
@@ -187,7 +221,9 @@ function addDepartment() {
 
 
 function addRole() {
+    //
     // get all departments available from database
+    //
     connection.query("SELECT * FROM department", function(err, results) {
       if (err) throw err;
       inquirer
@@ -241,7 +277,9 @@ function addRole() {
 
 
 function addEmployee() {
+    //
     // prompt user for new employee's first and last names
+    //
     inquirer
         .prompt([
             {
@@ -263,7 +301,9 @@ function addEmployee() {
 
 
 function getEmplRole(emplFirstName, emplLastName) {
+    //
     // get all id's and titles from role database
+    //
     connection.query("SELECT id, title FROM role", function(err, results) {
       if (err) throw err;
       inquirer
@@ -299,7 +339,9 @@ function getEmplRole(emplFirstName, emplLastName) {
 
 
 function getEmplManager(firstName, lastName, roleId) {
+  //
   // get all manager id's and full names from the employee database
+  //
   connection.query("SELECT DISTINCT employee.manager_id, CONCAT(manager.first_name, ' ', manager.last_name) AS Manager_Name FROM employee LEFT JOIN employee AS manager on manager.id = employee.manager_id WHERE employee.manager_id IS NOT NULL", function(err, results) {
     if (err) throw err;
     inquirer
@@ -351,3 +393,135 @@ function getEmplManager(firstName, lastName, roleId) {
 // ("CREATE TEMPORARY TABLE manager SELECT DISTINCT T1.id, CONCAT(T1.first_name, ' ', T1.last_name) AS 'Manager Name' FROM employee T1, employee T2 WHERE T1.id = T2.manager_id",
 // function(err, res) { 
 
+function updateEmployeeRole() {
+  //
+  // list all employee id's and names from the employee database so user may select which one to update 
+  //
+  connection.query("SELECT id, CONCAT(first_name, ' ', last_name) AS employee_name FROM employee", function(err, results) {
+    if (err) throw err;
+    inquirer
+       .prompt([
+           {
+           // prompt the user for the employee whose role needs to be updated
+           name: "emplToUpdate",
+           type: "rawlist",
+           choices: function() {
+              var emplArray = [];
+              for (var i = 0; i < results.length; i++) {
+                emplArray.push(results[i].employee_name);
+              }
+              //emplArray.push("None");
+              return emplArray;
+           },
+           message: "Which employee's role needs to be updated?"
+           }
+       ])
+       .then(function(answers) {
+           var chosenEmplId;
+           // capture the employee's id that needs their role updated 
+           for (var i = 0; i < results.length; i++) {
+              if (answers.emplToUpdate === results[i].employee_name) {
+                chosenEmplId = results[i].id;
+              }
+           }
+          // now list all roles from whcih the employee's new role will be chosen
+          getEmplNewRole(chosenEmplId)  
+       });
+   });
+
+}
+
+function getEmplNewRole(employeeId) {
+  //
+  // get all id's and titles from role database so user may select the employee's new title (role)
+  //
+  connection.query("SELECT id, title FROM role", function(err, results) {
+    if (err) throw err;
+    inquirer
+      .prompt([
+        // prompt the user for employee's new title (role)
+          {
+            name: "emplNewRole",
+            type: "rawlist",
+            choices: function() {
+                var roleArray = [];
+                for (var i = 0; i < results.length; i++) {
+                  roleArray.push(results[i].title);
+                }
+                return roleArray;
+            },
+            message: "What is the employee's new role?"
+          }
+      ])
+      .then(function(answers) {
+          var chosenRoleId;
+          // capture employee's new role id based on title
+          for (var i = 0; i < results.length; i++) {
+            if (results[i].title === answers.emplNewRole) {
+              chosenRoleId = results[i].id;
+            }
+          }
+           // finally update the employee record with employee's new role
+           connection.query("UPDATE employee SET ? WHERE ?",
+            [
+              {
+               role_id: chosenRoleId,
+              },
+              {
+               id: employeeId
+              }
+            ],
+            function(err) {
+              if (err) throw err;
+              // console.table(res);
+              main();
+           })
+      });
+  });
+}
+
+
+function deleteEmployee() {
+  //
+  // list all employee id's and names from the employee database so user may select which one to delete 
+  //
+  connection.query("SELECT id, CONCAT(first_name, ' ', last_name) AS employee_name FROM employee", function(err, results) {
+    if (err) throw err;
+    inquirer
+       .prompt([
+           {
+           // prompt the user for the employee to be deleted
+           name: "emplToDelete",
+           type: "rawlist",
+           choices: function() {
+              var emplArray = [];
+              for (var i = 0; i < results.length; i++) {
+                emplArray.push(results[i].employee_name);
+              }
+              //emplArray.push("None");
+              return emplArray;
+           },
+           message: "Which employee is to be deleted?"
+           }
+       ])
+       .then(function(answers) {
+           var chosenEmplId;
+           // capture the employee's id that needs their role updated 
+           for (var i = 0; i < results.length; i++) {
+              if (answers.emplToDelete === results[i].employee_name) {
+                chosenEmplId = results[i].id;
+              }
+           }
+           // delete the chosen employee from the employee table
+          connection.query("DELETE FROM employee WHERE ?",
+           {
+              id: chosenEmplId
+           },
+          function(err) {
+            if (err) throw err;
+            // console.table(res);
+            main();
+        }) 
+       });
+   });
+}
