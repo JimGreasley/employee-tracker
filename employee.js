@@ -1,8 +1,3 @@
-//const Employee = require("./lib/Employee");
-//const Manager = require("./lib/Manager");
-//const Engineer = require("./lib/Engineer");
-//const Intern = require("./lib/Intern");
-
 const inquirer = require("inquirer");
 //const path = require("path");
 //const fs = require("fs");
@@ -27,55 +22,6 @@ const connection = mysql.createConnection({
 });
 
 
-// const addEmplQuestions = [
-//     {
-//       type: "input",
-//       message: "What is the new employee's first name?",
-//       name: "emplFirstName"
-//     },
-//     {
-//     type: "input",
-//     message: "What is the new employee's last name?",
-//     name: "emplLastName"
-//     },
-//     {
-//       type: "input",
-//       message: "What is the new employee's role?",
-//       name: "emplRole"
-//     },
-//     {
-//       type: "input",
-//       message: "Who is the new employee's manager?",
-//       name: "emplManager"
-//     }
-// ];
-  
-// const addRoleQuestions = [
-//     {
-//       type: "input",
-//       message: "What is the title of the new role?",
-//       name: "roleTitle"
-//     },
-//     {
-//       type: "input",
-//       message: "What is the salary of the new role?",
-//       name: "roleSalary"
-//     },
-//     {
-//       type: "input",
-//       message: "To which department does the new role belong?",
-//       name: "roleDept"
-//     }
-// ];
-  
-// const addDeptQuestions = [
-//     {
-//       type: "input",
-//       message: "What is the new department's name?",
-//       name: "deptName"
-//     }
-// ];
-    
 const businessOwnerAction = {
     type: 'list',
     name: 'action',
@@ -143,32 +89,6 @@ function main() {
         }
       });
   }
-// if (selection.action === 'View all employees') {
-//     viewAllEmployees();
-// }
-// else if(selection.action === 'View all roles') {
-//     viewAllRoles();
-// }
-// else if(selection.action === 'View all departments') {
-//     viewAllDepartments();
-// }
-// else if(selection.action === 'Add employee') {
-//     addEmployee();
-// }
-// else if(selection.action === 'Add role') {
-//     addRole();
-// }
-// else if(selection.action === 'Add department') {
-//     addDepartment();
-// }
-// else if(selection.action === 'Update employee roles') {
-//     updateEmployeeRole();
-// }
-// else if(selection.action === 'Delete employee') {
-//     deleteEmployee();
-// } else{
-// connection.end();
-// }
 
 
 function viewAllEmployees() {
@@ -181,6 +101,11 @@ function viewAllEmployees() {
       }) 
   //  ("SELECT * FROM employee", function(err, res) { 
 }
+
+// ("SELECT first_name AS 'First Name', last_name AS 'Last Name', title AS Title, department.name AS Department, salary AS Salary, manager_name as Manager FROM (((employee LEFT JOIN role ON employee.role_id = role.id) LEFT JOIN department ON role.dept_id = department.id) LEFT JOIN manager ON employee.manager_id = manager.id) ORDER BY last_name",
+// ("CREATE TEMPORARY TABLE manager SELECT DISTINCT T1.id, CONCAT(T1.first_name, ' ', T1.last_name) AS 'Manager Name' FROM employee T1, employee T2 WHERE T1.id = T2.manager_id",
+// function(err, res) { 
+
 
 
 function viewAllRoles() {
@@ -388,10 +313,7 @@ function getEmplManager(firstName, lastName, roleId) {
    });
 }
 
-// ("SELECT first_name AS 'First Name', last_name AS 'Last Name', title AS Title, department.name AS Department, salary AS Salary, manager_name as Manager FROM (((employee LEFT JOIN role ON employee.role_id = role.id) LEFT JOIN department ON role.dept_id = department.id) LEFT JOIN manager ON employee.manager_id = manager.id) ORDER BY last_name",
 
-// ("CREATE TEMPORARY TABLE manager SELECT DISTINCT T1.id, CONCAT(T1.first_name, ' ', T1.last_name) AS 'Manager Name' FROM employee T1, employee T2 WHERE T1.id = T2.manager_id",
-// function(err, res) { 
 
 function updateEmployeeRole() {
   //

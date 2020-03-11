@@ -21,3 +21,12 @@ The actions to choose from currently include:
 
   * Delete an employee
 
+
+## GIFs
+
+![](/Develop/images/empl_add_dept.gif)
+![](/Develop/images/empl_add_role.gif)
+![](/Develop/images/empl_add_employee.gif)
+![](/Develop/images/empl_change_role.gif)
+![](/Develop/images/empl_delete_employee.gif)
+![](/Develop/images/empl_view_all.gif)
