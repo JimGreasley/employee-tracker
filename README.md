@@ -24,9 +24,9 @@ The actions to choose from currently include:
 
 ## GIFs
 
-![](/Develop/images/empl_add_dept.gif)
-![](/Develop/images/empl_add_role.gif)
-![](/Develop/images/empl_add_employee.gif)
-![](/Develop/images/empl_change_role.gif)
-![](/Develop/images/empl_delete_employee.gif)
-![](/Develop/images/empl_view_all.gif)
+![](/Assets/images/empl_add_dept.gif)
+![](/Assets/images/empl_add_role.gif)
+![](/Assets/images/empl_add_employee.gif)
+![](/Assets/images/empl_change_role.gif)
+![](/Assets/images/empl_delete_employee.gif)
+![](/Assets/images/empl_view_all.gif)
