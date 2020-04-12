@@ -24,14 +24,6 @@ The actions to choose from currently include:
 
 mySQL, inquirer CLI
 
-## Github code
-
-https://github.com/JimGreasley/employee-tracker
-
-## Deployment link
-
-https://jimgreasley.github.io/employee-tracker/
-
 
 ## GIFs
 
