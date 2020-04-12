@@ -27,8 +27,6 @@ name VARCHAR(30) NOT NULL,
 PRIMARY KEY (id)
 );
 
--- INSERT INTO employee (flavor, price, quantity)
--- VALUES ("vanilla", 2.50, 100);
 
 -- Load department table
 INSERT INTO department (name)

@@ -4,8 +4,7 @@ Design and build a solution for managing a company's employees.
 
 Three tables are defined within the company's employee database. One table defines the employees (id, first name, last name, role id and manager id), a second defines the roles an employee may have (id, title, salary and deparment id), and the third defines the various departments (id and name) within the company.
 
-The application utilizes a
- command line interface (CLI) and begins by listing a series of actions from which the user (business owner) may chose an action to perform.
+The application utilizes a command line interface (CLI) and begins by listing a series of actions from which the user (business owner) may chose an action to perform.
 
 The actions to choose from currently include:
 
@@ -20,6 +19,18 @@ The actions to choose from currently include:
   * Update an employee's role
 
   * Delete an employee
+
+## Technology used
+
+mySQL, inquirer CLI
+
+## Github code
+
+https://github.com/JimGreasley/employee-tracker
+
+## Deployment link
+
+https://jimgreasley.github.io/employee-tracker/
 
 
 ## GIFs

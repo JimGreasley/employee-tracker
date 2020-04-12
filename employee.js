@@ -1,10 +1,4 @@
 const inquirer = require("inquirer");
-//const path = require("path");
-//const fs = require("fs");
-
-//const OUTPUT_DIR = path.resolve(__dirname, "output");
-//const outputPath = path.join(OUTPUT_DIR, "team.html");
-
 const mysql = require("mysql");
 
 //-----------------------------------------------------------------
@@ -99,13 +93,9 @@ function viewAllEmployees() {
         console.table(res);
         main();
       }) 
-  //  ("SELECT * FROM employee", function(err, res) { 
 }
 
 // ("SELECT first_name AS 'First Name', last_name AS 'Last Name', title AS Title, department.name AS Department, salary AS Salary, manager_name as Manager FROM (((employee LEFT JOIN role ON employee.role_id = role.id) LEFT JOIN department ON role.dept_id = department.id) LEFT JOIN manager ON employee.manager_id = manager.id) ORDER BY last_name",
-// ("CREATE TEMPORARY TABLE manager SELECT DISTINCT T1.id, CONCAT(T1.first_name, ' ', T1.last_name) AS 'Manager Name' FROM employee T1, employee T2 WHERE T1.id = T2.manager_id",
-// function(err, res) { 
-
 
 
 function viewAllRoles() {
